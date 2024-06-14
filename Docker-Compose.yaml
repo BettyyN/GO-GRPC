@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8089:8089"
+    networks:
+      - grpc-network
+
+  frontend:
+    build:
+      context: ./frontend/grpc-web-client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+      - grpcwebproxy
+    networks:
+      - grpc-network
+
+  grpcwebproxy:
+    build:
+      context: ./grpcwebproxy
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"  # Maps port 8080 inside the container to 8081 on the host
+    depends_on:
+      - backend
+    command: [
+      "grpcwebproxy",
+      "--backend_addr=backend:8089",
+      "--backend_tls_noverify",
+      "--run_tls_server=false",
+      "--allow_all_origins"
+    ]
+    networks:
+      - grpc-network
+
+networks:
+  grpc-network:
+    driver: bridge
