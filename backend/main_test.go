@@ -8,16 +8,16 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
-	"github.com/BettyyN/go-grpc/backend/ping" // Adjust the import path as needed
+	"github.com/BettyyN/go-grpc/backend/ping" 
 )
 
 const (
-	testPort = ":8088" // Use a different port number here
+	testPort = ":8088" 
 )
 
-// mockPingServiceServer implements the PingServiceServer interface
+
 type mockPingServiceServer struct {
-	ping.UnimplementedPingServiceServer // Embedding UnimplementedPingServiceServer
+	ping.UnimplementedPingServiceServer
 }
 
 func (m *mockPingServiceServer) Ping(ctx context.Context, req *ping.PingRequest) (*ping.PingResponse, error) {
@@ -27,7 +27,7 @@ func (m *mockPingServiceServer) Ping(ctx context.Context, req *ping.PingRequest)
 }
 
 func TestPingService(t *testing.T) {
-	// Start the gRPC server in a separate goroutine
+	
 	go startGRPCServer(t, &mockPingServiceServer{})
 
 	// Create a gRPC client connection
@@ -45,7 +45,6 @@ func TestPingService(t *testing.T) {
 	assert.Equal(t, "Hello", response.GetMessage())
 }
 
-// startGRPCServer starts the gRPC server with the provided PingServiceServer implementation
 func startGRPCServer(t *testing.T, server ping.PingServiceServer) {
 	lis, err := net.Listen("tcp", testPort)
 	if err != nil {
