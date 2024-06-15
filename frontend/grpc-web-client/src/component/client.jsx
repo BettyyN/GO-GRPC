@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { PingRequest } from "../proto/ping_pb";
 import { PingServiceClient } from "../proto/ping_grpc_web_pb";
+import "../App.css"; 
 
 function Client() {
   const [message, setMessage] = useState("");
@@ -22,16 +23,19 @@ function Client() {
   };
 
   return (
-    <div>
-      <h2>Ping Client</h2>
+    <div className="container">
+      <h2 className="header">Ping Client</h2>
       <input
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Enter message"
+        className="input"
       />
-      <button onClick={handlePing}>Ping</button>
-      <div>
+      <button onClick={handlePing} className="button">
+        Ping
+      </button>
+      <div className="response">
         <h3>Response:</h3>
         <p>{response}</p>
       </div>
